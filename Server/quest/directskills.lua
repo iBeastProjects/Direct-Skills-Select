@@ -1,7 +1,7 @@
 quest directskills begin
 	state start begin
 		when login or levelup with pc.level >= 5 begin
-			if pc.get_skill_group() == 0 and pc.getqf("skills", 0) then
+			if pc.get_skill_group() == 0 then
 				syschat("You have reached level 5, you can select skills now. ")
 				syschat("Follow scroll 'Skills select' on left. ")
 				set_state(run)
@@ -9,10 +9,10 @@ quest directskills begin
 		end
 	end
 	state run begin
-		when letter with pc.getqf("skills") == 0 begin
+		when letter with pc.get_skill_group() == 0 begin
 			send_letter("Skills select ")
 		end
-		when button or info with pc.getqf("skills") == 0 begin
+		when button or info with pc.get_skill_group() == 0 begin
 			local all = {
 				[0] = {"Body-Force ", "Mental-Fight "},
 				[1] = {"Blade-Fight ", "Archery "},
@@ -49,7 +49,6 @@ quest directskills begin
 				for i = 1, table.getn(skill[pc.get_job()][pc.get_skill_group()]) do
 					pc.set_skill_level (skill[pc.get_job()][pc.get_skill_group()], 40)
 				end
-				pc.setqf("skills", 1)
 			elseif a == 3 then
 				return
 			end
